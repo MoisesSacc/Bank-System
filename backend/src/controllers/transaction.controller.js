@@ -61,6 +61,74 @@ const getTransactions = async (req, res) => {
     }
 
 };
+const transfer = async (req, res) => {
+
+    try {
+
+        const {
+            cuentaOrigenId,
+            numeroCuentaDestino,
+            monto
+        } = req.body;
+
+        const cuentaOrigen = await Account.findById(cuentaOrigenId);
+
+        if (!cuentaOrigen) {
+            return res.status(404).json({
+                message: 'Cuenta origen no encontrada'
+            });
+        }
+
+        const cuentaDestino = await Account.findOne({
+            numeroCuenta: numeroCuentaDestino
+        });
+
+        if (!cuentaDestino) {
+            return res.status(404).json({
+                message: 'Cuenta destino no encontrada'
+            });
+        }
+
+        if (cuentaOrigen.saldo < monto) {
+            return res.status(400).json({
+                message: 'Saldo insuficiente'
+            });
+        }
+
+        cuentaOrigen.saldo -= monto;
+
+        cuentaDestino.saldo += monto;
+
+        await cuentaOrigen.save();
+        await cuentaDestino.save();
+
+        await Transaction.create({
+            cuenta: cuentaOrigen._id,
+            tipo: 'transferencia',
+            monto,
+            descripcion: `Transferencia enviada a ${cuentaDestino.numeroCuenta}`
+        });
+
+        await Transaction.create({
+            cuenta: cuentaDestino._id,
+            tipo: 'deposito',
+            monto,
+            descripcion: `Transferencia recibida de ${cuentaOrigen.numeroCuenta}`
+        });
+
+        res.json({
+            message: 'Transferencia realizada correctamente'
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+};
 module.exports = {
-    createTransaction, getTransactions
+    createTransaction, getTransactions, transfer
 };
