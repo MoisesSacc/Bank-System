@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3004/api/auth';
+  private apiUrl = 'https://bank-system-74jr.onrender.com/api/auth';
 
   constructor(private http: HttpClient) {}
 
