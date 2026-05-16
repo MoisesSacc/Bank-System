@@ -4,11 +4,22 @@ const verifyToken = (req, res, next) => {
 
     try {
 
-        const token = req.header('Authorization');
+        const authHeader = req.header('Authorization');
+
+        if (!authHeader) {
+            return res.status(401).json({
+                message: 'Token requerido'
+            });
+        }
+
+        // Extraer el token del formato "Bearer <token>"
+        const token = authHeader.startsWith('Bearer ') 
+            ? authHeader.slice(7) 
+            : authHeader;
 
         if (!token) {
             return res.status(401).json({
-                message: 'Token requerido'
+                message: 'Token inválido'
             });
         }
 
@@ -21,7 +32,7 @@ const verifyToken = (req, res, next) => {
     } catch (error) {
 
         return res.status(401).json({
-            message: 'Token inválido'
+            message: 'Token inválido o expirado'
         });
 
     }

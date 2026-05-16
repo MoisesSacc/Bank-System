@@ -16,7 +16,7 @@ export class TransactionService {
     const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
-      Authorization: token || ''
+      Authorization: `Bearer ${token || ''}`
     });
 
     return this.http.get(
@@ -24,16 +24,31 @@ export class TransactionService {
       { headers }
     );
   }
+
   transfer(data: any) {
 
     const token = localStorage.getItem('token');
   
     const headers = new HttpHeaders({
-      Authorization: token || ''
+      Authorization: `Bearer ${token || ''}`
     });
   
     return this.http.post(
       `${this.apiUrl}/transfer`,
+      data,
+      { headers }
+    );
+  }
+
+  createTransaction(data: any) {
+    const token = localStorage.getItem('token');
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token || ''}`
+    });
+  
+    return this.http.post(
+      `${this.apiUrl}/create`,
       data,
       { headers }
     );

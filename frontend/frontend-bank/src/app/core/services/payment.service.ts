@@ -16,7 +16,7 @@ export class PaymentService {
     const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
-      Authorization: token || ''
+      Authorization: `Bearer ${token || ''}`
     });
 
     return this.http.post(

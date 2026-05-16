@@ -71,6 +71,19 @@ const transfer = async (req, res) => {
             monto
         } = req.body;
 
+        // Validaciones
+        if (!cuentaOrigenId || !numeroCuentaDestino || !monto) {
+            return res.status(400).json({
+                message: 'Todos los campos son requeridos'
+            });
+        }
+
+        if (monto <= 0) {
+            return res.status(400).json({
+                message: 'El monto debe ser mayor a 0'
+            });
+        }
+
         const cuentaOrigen = await Account.findById(cuentaOrigenId);
 
         if (!cuentaOrigen) {

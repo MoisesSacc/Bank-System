@@ -12,6 +12,19 @@ const payService = async (req, res) => {
             monto
         } = req.body;
 
+        // Validaciones
+        if (!cuentaId || !servicio || !monto) {
+            return res.status(400).json({
+                message: 'Todos los campos son requeridos'
+            });
+        }
+
+        if (monto <= 0) {
+            return res.status(400).json({
+                message: 'El monto debe ser mayor a 0'
+            });
+        }
+
         const account = await Account.findById(cuentaId);
 
         if (!account) {

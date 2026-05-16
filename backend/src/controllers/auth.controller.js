@@ -8,6 +8,19 @@ const register = async (req, res) => {
 
         const { nombre, correo, password } = req.body;
 
+        // Validaciones
+        if (!nombre || !correo || !password) {
+            return res.status(400).json({
+                message: 'Todos los campos son requeridos'
+            });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({
+                message: 'La contraseña debe tener al menos 6 caracteres'
+            });
+        }
+
         const userExists = await User.findOne({ correo });
 
         if (userExists) {
@@ -45,6 +58,13 @@ const login = async (req, res) => {
 
         const { correo, password } = req.body;
 
+        // Validaciones
+        if (!correo || !password) {
+            return res.status(400).json({
+                message: 'Correo y contraseña son requeridos'
+            });
+        }
+
         const user = await User.findOne({ correo });
 
         if (!user) {
@@ -55,7 +75,7 @@ const login = async (req, res) => {
 
         if (user.bloqueado) {
             return res.status(403).json({
-                message: 'Cuenta bloqueada'
+                message: 'Cuenta bloqueada por múltiples intentos fallidos'
             });
         }
 

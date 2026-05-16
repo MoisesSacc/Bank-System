@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../layout/navbar/navbar';
 import { SidebarComponent } from '../../layout/sidebar/sidebar';
 import { AccountService } from '../../core/services/account.service';
@@ -6,13 +6,14 @@ import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../core/services/transaction.service';
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
   imports: [NavbarComponent,
     SidebarComponent,
     CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   accounts: any[] = [];
   transactions: any[] = [];
   constructor(

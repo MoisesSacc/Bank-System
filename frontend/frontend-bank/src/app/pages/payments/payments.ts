@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,7 @@ import { PaymentService } from '../../core/services/payment.service';
 import { AccountService } from '../../core/services/account.service';
 @Component({
   selector: 'app-payments',
+  standalone: true,
   imports: [CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -22,7 +23,7 @@ import { AccountService } from '../../core/services/account.service';
   templateUrl: './payments.html',
   styleUrl: './payments.css',
 })
-export class PaymentsComponent {
+export class PaymentsComponent implements OnInit {
   accounts: any[] = [];
   servicio = '';
   cuentaOrigenId = '';

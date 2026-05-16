@@ -15,4 +15,12 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, data);
   }
 
+  register(data: any) {
+    return this.http.post(`${this.apiUrl}/register`, data);
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+  }
+
 }

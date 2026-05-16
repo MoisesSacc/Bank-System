@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,7 +24,7 @@ import { AccountService } from '../../core/services/account.service';
   templateUrl: './transfers.html',
   styleUrl: './transfers.css',
 })
-export class TransfersComponent {
+export class TransfersComponent implements OnInit {
   constructor(
     private transactionService: TransactionService,
     private accountService: AccountService

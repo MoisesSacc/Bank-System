@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [ 
     MatCardModule,
     MatFormFieldModule,
@@ -20,23 +21,39 @@ import { AuthService } from '../../core/services/auth.service';
 export class LoginComponent {
   correo = '';
   password = '';
+  isLoading = false;
+  errorMessage = '';
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
   login() {
+    // Validaciones básicas
+    if (!this.correo.trim()) {
+      this.errorMessage = 'Por favor ingresa tu correo';
+      return;
+    }
+    if (!this.password.trim()) {
+      this.errorMessage = 'Por favor ingresa tu contraseña';
+      return;
+    }
+    
+    this.isLoading = true;
+    this.errorMessage = '';
     const data = {
       correo: this.correo,
       password: this.password
     };
     this.authService.login(data).subscribe({
       next: (response: any) => {
+        this.isLoading = false;
         localStorage.setItem('token', response.token);
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
+        this.isLoading = false;
         console.log(error);
-        alert('Credenciales incorrectas');
+        this.errorMessage = error.error?.message || 'Credenciales incorrectas';
       }
     });
   
